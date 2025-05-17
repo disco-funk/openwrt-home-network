@@ -1,0 +1,152 @@
+# Allow all-ping
+uci set firewall.@defaults[0].accept_icmp_echo_request='1'
+
+# Disable broadcast-ping
+uci set firewall.@defaults[0].accept_icmp_echo_broadcast='0'
+
+# IPv6 WAN inbound traffic forwarded to LAN
+uci add firewall rule
+uci set firewall.@rule[-1].name='WANV6_IN_default'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+uci set firewall.@rule[-1].enabled='1'
+
+# Allow established/related sessions for WANV6_IN
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow established/related WANV6_IN'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+uci set firewall.@rule[-1].state='RELATED,ESTABLISHED'
+
+# Drop invalid state for WANV6_IN
+uci add firewall rule
+uci set firewall.@rule[-1].name='Drop invalid WANV6_IN'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+uci set firewall.@rule[-1].state='INVALID'
+
+# IPv6 WAN inbound traffic to the router
+uci add firewall rule
+uci set firewall.@rule[-1].name='WANV6_LOCAL_default'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].enabled='1'
+
+# Allow established/related sessions for WANV6_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow established/related WANV6_LOCAL'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].state='RELATED,ESTABLISHED'
+
+# Drop invalid state for WANV6_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Drop invalid WANV6_LOCAL'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].state='INVALID'
+
+# Allow IPv6 ICMP for WANV6_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow IPv6 ICMP WANV6_LOCAL'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].proto='icmp'
+
+# Allow DHCPv6 for WANV6_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow DHCPv6 WANV6_LOCAL'
+uci set firewall.@rule[-1].family='ipv6'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].proto='udp'
+uci set firewall.@rule[-1].src_port='547'
+uci set firewall.@rule[-1].dest_port='546'
+
+# Disable IPv6 redirects
+uci set firewall.@defaults[0].disable_ipv6_redirects='1'
+
+# Disable IPv6 source routing
+uci set firewall.@defaults[0].disable_ipv6_src_routing='1'
+
+# Disable IP source routing
+uci set firewall.@defaults[0].disable_ip_src_routing='1'
+
+# Enable logging martians
+uci set firewall.@defaults[0].log_martians='1'
+
+# WAN to internal (IPv4)
+uci add firewall rule
+uci set firewall.@rule[-1].name='WAN_IN_default'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+
+# Allow established/related for WAN_IN
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow established/related WAN_IN'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+uci set firewall.@rule[-1].state='RELATED,ESTABLISHED'
+
+# Drop invalid state for WAN_IN
+uci add firewall rule
+uci set firewall.@rule[-1].name='Drop invalid WAN_IN'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='lan'
+uci set firewall.@rule[-1].state='INVALID'
+
+# WAN to router (IPv4)
+uci add firewall rule
+uci set firewall.@rule[-1].name='WAN_LOCAL_default'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+
+# Allow established/related for WAN_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow established/related WAN_LOCAL'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].state='RELATED,ESTABLISHED'
+
+# Drop invalid state for WAN_LOCAL
+uci add firewall rule
+uci set firewall.@rule[-1].name='Drop invalid WAN_LOCAL'
+uci set firewall.@rule[-1].target='DROP'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest='*'
+uci set firewall.@rule[-1].state='INVALID'
+
+# Disable receive redirects
+uci set firewall.@defaults[0].disable_receive_redirects='1'
+
+# Enable send redirects
+uci set firewall.@defaults[0].enable_send_redirects='1'
+
+# Disable source validation
+uci set firewall.@defaults[0].disable_source_validation='1'
+
+# Enable SYN cookies
+uci set firewall.@defaults[0].enable_syn_cookies='1'
+
+# Commit changes
+uci commit firewall

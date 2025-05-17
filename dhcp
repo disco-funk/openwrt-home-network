@@ -1,0 +1,102 @@
+# General DNS and DHCP settings
+config dnsmasq
+    option domainneeded '1'
+    option boguspriv '1'
+    option filterwin2k '0'
+    option localise_queries '1'
+    option rebind_protection '1'
+    option rebind_localhost '1'
+    option local '/phil.home.arpa/'
+    option domain 'phil.home.arpa'
+    option expandhosts '1'
+    option cachesize '150'
+    list server '9.9.9.9'
+    option authoritative '1'
+
+# DHCP for LAN (192.168.0.0/24)
+config dhcp 'lan'
+    option interface 'lan'
+    option start '100'
+    option limit '10'
+    option leasetime '1h'
+    option dhcpv6 'server'
+    option ra 'server'
+    list dhcp_option '6,192.168.0.1' # DNS server
+    list dhcp_option '15,admin.phil.home.arpa' # Domain name
+
+config host
+    option name 'PHIL-PC-Intel-1.0Gbps'
+    option mac '24:4b:fe:5d:8c:0c'
+    option ip '192.168.0.100'
+
+# DHCP for VLAN10 (192.168.10.0/24)
+config dhcp 'vlan10'
+    option interface 'vlan10'
+    option start '100'
+    option limit '155'
+    option leasetime '1h'
+    list dhcp_option '6,192.168.10.1' # DNS server
+    list dhcp_option '15,lan.phil.home.arpa' # Domain name
+
+config host
+    option name 'PHIL-PC-Wifi'
+    option mac 'A8:7E:EA:6F:6E:5E'
+    option ip '192.168.10.104'
+
+# DHCP for VLAN20 (192.168.20.0/24)
+config dhcp 'vlan20'
+    option interface 'vlan20'
+    option start '100'
+    option limit '155'
+    option leasetime '1h'
+    list dhcp_option '6,192.168.20.1' # DNS server
+    list dhcp_option '15,iot.phil.home.arpa' # Domain name
+
+config host
+    option name 'Aqara-Hub-M2-5BEE'
+    option mac '18:c2:3c:1b:c3:2e'
+    option ip '192.168.20.104'
+
+config host
+    option name 'PHIL-PC-Wifi'
+    option mac '24:4b:fe:5d:8c:0d'
+    option ip '192.168.20.106'
+
+config host
+    option name 'PHIL-PC-Intel-1.0GbE'
+    option mac '24:4b:fe:5d:8c:0c'
+    option ip '192.168.20.105'
+
+config host
+    option name 'TIZEN-Samsung-TV'
+    option mac '00:c3:f4:ab:71:eb'
+    option ip '192.168.20.107'
+
+config host
+    option name 'aeotec-hubv3-04021231314'
+    option mac '28:6d:97:91:d7:94'
+    option ip '192.168.20.103'
+
+config host
+    option name 'amazon-echo-dot-bedroom'
+    option mac 'fc:e9:d8:5a:ea:e0'
+    option ip '192.168.20.230'
+
+config host
+    option name 'amazon-echo-dot-den'
+    option mac '90:f8:2e:81:48:c3'
+    option ip '192.168.20.231'
+
+config host
+    option name 'amazon-echo-dot-living-room'
+    option mac '98:cc:f3:c7:3e:63'
+    option ip '192.168.20.232'
+
+# DHCP for VLAN30 (192.168.30.0/24)
+config dhcp 'vlan30'
+    option interface 'vlan30'
+    option start '100'
+    option limit '10'
+    option leasetime '1h'
+    list dhcp_option '6,192.168.30.1' # DNS server
+    list dhcp_option '15,security.phil.home.arpa' # Domain name

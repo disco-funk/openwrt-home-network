@@ -1,0 +1,35 @@
+
+# Hostname
+config system
+    option hostname 'router'
+    option timezone 'Europe/London'
+
+# DNS server
+config system
+    option dns '9.9.9.9'
+
+# Logging
+config system
+    option log_size '256' # Log size in KB
+    option log_file '/var/log/main.log'
+    option log_level 'notice'
+
+# NTP servers
+config timeserver 'ntp'
+    list server '0.ubnt.pool.ntp.org'
+    list server '1.ubnt.pool.ntp.org'
+    list server '2.ubnt.pool.ntp.org'
+    list server '3.ubnt.pool.ntp.org'
+
+# SSH configuration
+config dropbear
+    option PasswordAuth 'on'
+    option Port '22'
+
+# GUI configuration
+config uhttpd 'main'
+    option listen_http '0.0.0.0:80'
+    option listen_https '0.0.0.0:443'
+    option redirect_https '1'
+    option ciphers 'modern'
+
